@@ -1,22 +1,33 @@
 {
   "name": "electro-pub",
+  "description": "An EPub reader",
   "version": "0.0.1",
   "productName": "Electro PUB",
+  "license": "GPLv3",
   "main": "loader.js",
+  "repository": "https://github.com/flying-sheep/electro-pub",
   "dependencies": {
-    "adm-zip": "~0.4",
+    "adm-zip": "^0.4",
     "babel": "^5.8",
     "react": "^0.14",
     "react-dom": "^0.14",
     "redux": "^3.0",
     "xml2js": "^0.4"
   },
+  "devDependencies": {
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-babel": "^5.2"
+  },
   "babel": {
     "whitelist": [
       "strict",
       "es6.modules",
+      "es7.classProperties",
       "react",
       "optimisation.react.inlineElements"
     ]
+  },
+  "scripts": {
+    "gulp": "./node_modules/gulp/bin/gulp.js"
   }
 }

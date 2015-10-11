@@ -12,7 +12,6 @@ class Toc extends React.Component {
 		</ul>
 	}
 }
-
 Toc.defaultProps = {
 	nodes: []
 }

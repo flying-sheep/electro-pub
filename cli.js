@@ -20,7 +20,7 @@ app.on('window-all-closed', () => {
 
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]
-let option = { file: null, help: null, version: null }
+let option = { file: null, help: false, version: false }
 for (let arg of argv) {
 	if (new Set(['--version', '-v']).has(arg)) {
 		option.version = true
@@ -78,11 +78,17 @@ app.on('ready', () => {
 	
 	//mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
 	
+	if (option.file == null)
+		return  // default UI
+	
 	Promise.all([
 		event(mainWindow.webContents, 'did-finish-load'),
 		EPub.read(option.file),
 	]).then(([_, epub]) => {
 		console.log(epub)
 		mainWindow.webContents.send('toc', epub.toc)
-	}).catch(e => console.error(e))
+	}).catch(e => {
+		console.error(e)
+		throw e
+	})
 })

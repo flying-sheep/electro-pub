@@ -2,34 +2,26 @@
 
 import remote from 'remote'
 import ipc from 'ipc'
-import React from 'react'
 import ReactDOM from 'react-dom'
 
-class Toc extends React.Component {
-	render() {
-		return <ul>
-			{ this.props.nodes.map(toc => <TocNode toc={toc}/>) }
-		</ul>
-	}
-}
-Toc.defaultProps = {
-	nodes: []
-}
+import Toc from './components/toc'
 
-class TocNode extends React.Component {
-	render() {
-		return <div>
-			<header>{ this.props.toc.label }</header>
-			{ (this.props.toc.sub) ? <Toc nodes={this.props.toc.sub}/> : null }
-		</div>
-	}
-}
-TocNode.defaultProps = {
-	toc: []
-}
+const Splash = props => <div>Hi!</div>
 
-ipc.on('toc', function(toc) {
+ipc.on('toc', toc => {
 	window.toc = toc
 	
 	ReactDOM.render(<Toc nodes={toc}/>, document.getElementById('toc'))
+})
+
+/*
+ipc.on('chapter', chapter => {
+	window.chapter = chapter
+	
+	ReactDOM.render(<Chapter chapter={chapter}/>, document.getElementById('main'))
+})
+*/
+
+document.addEventListener('DOMContentLoaded', e => {
+	ReactDOM.render(<Splash/>, document.getElementById('main'))
 })

@@ -22,6 +22,7 @@
     "whitelist": [
       "strict",
       "es6.modules",
+      "es6.parameters",
       "es7.classProperties",
       "react",
       "optimisation.react.inlineElements"

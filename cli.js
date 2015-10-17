@@ -6,17 +6,12 @@ import fs from 'fs'
 import path from 'path'
 import Menu from 'menu'
 import BrowserWindow from 'browser-window'
+import ipc from 'ipc'
 import { openExternal } from 'shell'
 
 import createMenuTemplate from './menu-template'
 import event from './event-promise'
 import EPub from './epub'
-
-// Quit when all windows are closed and no other one is listening to this.
-app.on('window-all-closed', () => {
-	if (app.listeners('window-all-closed').length == 1)
-		app.quit()
-})
 
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]
@@ -37,12 +32,6 @@ for (let arg of argv) {
 	}
 }
 
-// Create default menu.
-app.once('ready', () => {
-	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
-	Menu.setApplicationMenu(menu)
-})
-
 if (option.version) {
 	console.log(`v${process.versions.electroPub}`)
 	process.exit(0)
@@ -61,12 +50,18 @@ Options:
 	process.exit(0)
 }
 
+function openEpub(epub) {
+	mainWindow.webContents.send('toc', epub.toc)
+}
+
 let mainWindow = null
 
-// Quit when all windows are closed.
-app.on('window-all-closed', () => app.quit())
+app.once('window-all-closed', () => app.quit())
 
-app.on('ready', () => {
+app.once('ready', () => {
+	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
+	Menu.setApplicationMenu(menu)
+	
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
@@ -85,10 +80,14 @@ app.on('ready', () => {
 		event(mainWindow.webContents, 'did-finish-load'),
 		EPub.read(option.file),
 	]).then(([_, epub]) => {
-		console.log(epub)
-		mainWindow.webContents.send('toc', epub.toc)
+		openEpub(epub)
 	}).catch(e => {
 		console.error(e)
 		throw e
 	})
+})
+
+ipc.on('open', (e, path) => {
+	console.log(path)
+	EPub.read(path).then(openEpub)
 })

@@ -28,13 +28,11 @@ ipc.on('toc', toc => {
 	ReactDOM.render(<Toc nodes={toc}/>, document.getElementById('toc'))
 })
 
-/*
 ipc.on('chapter', chapter => {
 	window.chapter = chapter
 	
 	ReactDOM.render(<Chapter chapter={chapter}/>, document.getElementById('main'))
 })
-*/
 
 document.addEventListener('DOMContentLoaded', e => {
 	ReactDOM.render(<Splash/>, document.getElementById('main'))

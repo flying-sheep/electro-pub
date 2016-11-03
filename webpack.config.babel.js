@@ -1,12 +1,7 @@
-/* global __dirname */
-
-import fs from 'fs'
-import path from 'path'
-
 import webpack from 'webpack'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 
-import package_info from './package.json'
+import packageInfo from './package.json'
 
 const paths = {
 	package_json: `${__dirname}/'package.json'`,
@@ -40,7 +35,7 @@ export default {
 				loader: 'babel-loader',
 				test: paths.client.js,
 			},
-		]
+		],
 	},
 	plugins: [
 		new CopyWebpackPlugin([
@@ -49,7 +44,7 @@ export default {
 		]),
 		new webpack.DefinePlugin({
 			'process.versions': {
-				electroPub: JSON.stringify(package_info.version),
+				electroPub: JSON.stringify(packageInfo.version),
 			},
 		}),
 		new webpack.NoErrorsPlugin(),

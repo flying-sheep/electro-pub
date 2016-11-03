@@ -1,0 +1,9 @@
+{
+  "extends": "flying-sheep",
+  "settings": {
+    "import/core-modules": ["electron"]
+  },
+  "rules": {
+    "no-console": [0]
+  }
+}

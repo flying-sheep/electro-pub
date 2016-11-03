@@ -9,13 +9,14 @@ const EPUB_MIME = 'application/epub+zip'
 const PACKAGE_MIME = 'application/oebps-package+xml'
 
 
-const parseXML = (str) =>
-	new Promise((resolve, reject) => {
+function parseXML(str) {
+	return new Promise((resolve, reject) => {
 		parseString(str, { explicitRoot: false }, (e, r) => {
 			if (e) reject(e)
-			else  resolve(r)
+			else resolve(r)
 		})
 	})
+}
 
 
 export class EPubError extends Error {}
@@ -43,21 +44,18 @@ export class Item {
 export class TableOfContents {
 	constructor(label, href, sub) {
 		this.label = label
-		if (href != null)
-			this.href = href
-		if (sub != null)
-			this.sub = sub
+		if (href != null) this.href = href
+		if (sub != null) this.sub = sub
 	}
 	
 	/**
 	 * Recursive function to convert an array of navPoints to a toc hierarchy
-	 * 
+	 *
 	 * @param navPoints  \package xml2js array of \c <navPoint/> nodes
 	 * @return           Table of contents (\link Toc) object
 	 */
 	static fromNavPoints(navPoints) {
-		if (navPoints == null)
-			return null
+		if (navPoints == null) return null
 		return navPoints.map(navPoint => new TableOfContents(
 			navPoint.navLabel[0].text[0],
 			navPoint.content[0].$.src,
@@ -68,9 +66,9 @@ export class TableOfContents {
 
 /**
  * Representation of an EPub document containing all relevant data to render it.
- * 
+ *
  * This includes a manifest
- * 
+ *
  * @param manifest  Object mapping hrefs to \link Item objects
  * @param spine     Array containing all chapter manifest hrefs in page turn order
  * @param toc       \link TableOfContents object
@@ -84,13 +82,14 @@ export default class EPub {
 	
 	/**
 	 * Read an \link EPub object from a file path.
-	 * 
+	 *
 	 * @param path  File path to an EPub document
 	 * @return      Promise that resolves to an \link EPub object
 	 */
 	static read(path) {
-		if (path == null)
+		if (path == null) {
 			throw new EPubError('‘path’ needs to be a file path string, not null/undefined')
+		}
 		
 		try {
 			fs.accessSync(path, fs.R_OK)
@@ -102,29 +101,30 @@ export default class EPub {
 		const getStr = name => zip.getEntry(name).getData().toString('utf8')
 		
 		const mime = getStr('mimetype').trim()
-		if (mime !== EPUB_MIME)
+		if (mime !== EPUB_MIME) {
 			throw new EPubError(`mimetype entry is ‘${mime}’ instead of ‘${EPUB_MIME}’`)
+		}
 		
 		let dir = null
 		let manifest = null
 		let spine = null
 		
 		return parseXML(getStr('META-INF/container.xml'))
-			.then(container => {
+			.then((container) => {
 				const rootfiles = container.rootfiles[0].rootfile
 				const packageNode = rootfiles.filter(root => root.$['media-type'] === PACKAGE_MIME)[0]
-				const path = packageNode.$['full-path']
-				dir = dirname(path)
-				return parseXML(getStr(path))
-			}).then(pkg => {
-				//also available here: guide, metadata
+				const entryPath = packageNode.$['full-path']
+				dir = dirname(entryPath)
+				return parseXML(getStr(entryPath))
+			}).then((pkg) => {
+				// also available here: guide, metadata
 				
-				//TODO: use manifest to allow links
+				// TODO: use manifest to allow links
 				const id2item = {}
 				manifest = {}
-				for (let itemNode of pkg.manifest[0].item) {
-					let data = zip.getEntry(join(dir, itemNode.$.href)).getData()
-					let item = new Item(itemNode.$.href, itemNode.$['media-type'], data)
+				for (const itemNode of pkg.manifest[0].item) {
+					const data = zip.getEntry(join(dir, itemNode.$.href)).getData()
+					const item = new Item(itemNode.$.href, itemNode.$['media-type'], data)
 					
 					id2item[itemNode.$.id] = item
 					manifest[item.href] = item
@@ -134,7 +134,7 @@ export default class EPub {
 				spine = spineNode.itemref.map(i => id2item[i.$.idref].href)
 				
 				return parseXML(id2item[spineNode.$.toc].data.toString('utf8'))
-			}).then(ncx => {
+			}).then((ncx) => {
 				const toc = TableOfContents.fromNavPoints(ncx.navMap[0].navPoint)
 				
 				return new EPub(manifest, spine, toc)

@@ -13,7 +13,7 @@ export default class EpubServer {
 	}
 	
 	listen() {
-		this.server.listen(PORT, () => {
+		this.server.listen(this.port, () => {
 			console.log(`Server listening on: http://localhost:${this.port}`)
 		})
 	}

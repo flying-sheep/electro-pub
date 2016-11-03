@@ -1,29 +1,25 @@
-'use strict'
-
 import 'source-map-support/register'
 
-import path from 'path'
-
 import electron from 'electron'
-const { app, ipcMain, BrowserWindow, Menu } = electron
 
 import createMenuTemplate from './menu-template'
 import event from './event-promise'
 import EPub from './epub'
 
+const { app, ipcMain, BrowserWindow, Menu } = electron
+
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]
-let option = { file: null, help: false, version: false }
-for (let arg of argv) {
+const option = { file: null, help: false, version: false }
+for (const arg of argv) {
 	if (new Set(['--version', '-v']).has(arg)) {
 		option.version = true
 		break
 	} else if (new Set(['--help', '-h']).has(arg)) {
 		option.help = true
 		break
-	} else if (arg[0] == '-') {
+	} else if (arg[0] === '-') {
 		console.warn(`unknown option ${arg}`)
-		continue
 	} else {
 		option.file = arg
 		break
@@ -48,11 +44,11 @@ Options:
 	process.exit(0)
 }
 
+let mainWindow = null
+
 function openEpub(epub) {
 	mainWindow.webContents.send('toc', epub.toc)
 }
-
-let mainWindow = null
 
 app.once('window-all-closed', () => app.quit())
 
@@ -69,17 +65,16 @@ app.once('ready', () => {
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()
 	
-	//mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
+	// mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
 	
-	if (option.file == null)
-		return  // default UI
+	if (option.file == null) return  // default UI
 	
 	Promise.all([
 		event(mainWindow.webContents, 'did-finish-load'),
 		EPub.read(option.file),
 	]).then(([_, epub]) => {
 		openEpub(epub)
-	}).catch(e => {
+	}).catch((e) => {
 		console.error(e)
 		throw e
 	})

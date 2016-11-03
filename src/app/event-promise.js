@@ -1,5 +1,5 @@
 const event = (target, type) =>
-	new Promise((resolve, reject) =>
+	new Promise((resolve, _) =>
 		target.on(type, r => resolve(r)))
 
 export default event

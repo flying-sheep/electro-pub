@@ -8,9 +8,9 @@
   "repository": "https://github.com/flying-sheep/electro-pub",
   "dependencies": {
     "adm-zip": "^0.4",
-    "react": "^0.14",
-    "react-dom": "^0.14",
-    "react-dropzone": "^2.2.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-dropzone": "^3.7.2",
     "redux": "^3.0",
     "source-map-support": "^0.4.6",
     "xml2js": "^0.4"

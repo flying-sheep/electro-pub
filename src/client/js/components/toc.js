@@ -6,7 +6,7 @@ export default class Toc extends React.Component {
 	}
 	render() {
 		return <ul>
-			{ this.props.nodes.map(toc => <TocNode toc={toc}/>) }
+			{ this.props.nodes.map(toc => <TocNode toc={toc} key={toc.label} />) }
 		</ul>
 	}
 }

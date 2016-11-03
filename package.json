@@ -4,32 +4,27 @@
   "version": "0.0.1",
   "productName": "Electro PUB",
   "license": "GPLv3",
-  "main": "loader.js",
+  "main": "build/app.js",
   "repository": "https://github.com/flying-sheep/electro-pub",
   "dependencies": {
     "adm-zip": "^0.4",
-    "babel": "^5.8",
     "react": "^0.14",
     "react-dom": "^0.14",
     "react-dropzone": "^2.2.0",
     "redux": "^3.0",
+    "source-map-support": "^0.4.6",
     "xml2js": "^0.4"
   },
   "devDependencies": {
-    "gulp": "github:gulpjs/gulp#4.0",
-    "gulp-babel": "^5.2"
-  },
-  "babel": {
-    "whitelist": [
-      "strict",
-      "es6.modules",
-      "es6.parameters",
-      "es7.classProperties",
-      "react",
-      "optimisation.react.inlineElements"
-    ]
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "copy-webpack-plugin": "^4.0.0",
+    "webpack": "^2.1.0-beta.25"
   },
   "scripts": {
-    "gulp": "gulp"
+    "build": "webpack",
+    "watch": "webpack --watch"
   }
 }

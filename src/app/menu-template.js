@@ -1,5 +1,5 @@
-import BrowserWindow from 'browser-window'
-import { openExternal } from 'shell'
+import electron from 'electron'
+const { BrowserWindow, shell: { openExternal } } = electron
 
 export default function createMenuTemplate(app) {
 	if (process.platform == 'darwin') return [

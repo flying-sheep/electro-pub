@@ -1,7 +1,8 @@
 'use strict'
 
-import remote from 'remote'
-import ipc from 'ipc'
+import electron from 'electron'
+const { ipcRenderer } = electron
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Dropzone from 'react-dropzone'
@@ -18,17 +19,17 @@ class Splash extends React.Component {
 		</div>
 	}
 	onDrop(files) {
-		ipc.send('open', files[0].path)
+		ipcRenderer.send('open', files[0].path)
 	}
 }
 
-ipc.on('toc', toc => {
+ipcRenderer.on('toc', (e, toc) => {
 	window.toc = toc
 	
 	ReactDOM.render(<Toc nodes={toc}/>, document.getElementById('toc'))
 })
 
-ipc.on('chapter', chapter => {
+ipcRenderer.on('chapter', (e, chapter) => {
 	window.chapter = chapter
 	
 	ReactDOM.render(<Chapter chapter={chapter}/>, document.getElementById('main'))

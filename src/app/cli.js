@@ -1,13 +1,11 @@
 'use strict'
 
-import app from 'app'
-import dialog from 'dialog'
-import fs from 'fs'
+import 'source-map-support/register'
+
 import path from 'path'
-import Menu from 'menu'
-import BrowserWindow from 'browser-window'
-import ipc from 'ipc'
-import { openExternal } from 'shell'
+
+import electron from 'electron'
+const { app, ipcMain, BrowserWindow, Menu } = electron
 
 import createMenuTemplate from './menu-template'
 import event from './event-promise'
@@ -65,10 +63,10 @@ app.once('ready', () => {
 	mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
-		'auto-hide-menu-bar': true,
-		'use-content-size': true,
+		autoHideMenuBar: true,
+		useContentSize: true,
 	})
-	mainWindow.loadUrl(`file://${__dirname}/client/index.html`)
+	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()
 	
 	//mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
@@ -87,7 +85,7 @@ app.once('ready', () => {
 	})
 })
 
-ipc.on('open', (e, path) => {
+ipcMain.on('open', (e, path) => {
 	console.log(path)
 	EPub.read(path).then(openEpub)
 })

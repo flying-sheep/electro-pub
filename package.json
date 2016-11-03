@@ -8,6 +8,7 @@
   "repository": "https://github.com/flying-sheep/electro-pub",
   "dependencies": {
     "adm-zip": "^0.4",
+    "event-to-promise": "^0.7.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.7.2",

@@ -2,8 +2,9 @@ import 'source-map-support/register'
 
 import electron from 'electron'
 
+import eventToPromise from 'event-to-promise'
+
 import createMenuTemplate from './menu-template'
-import event from './event-promise'
 import EPub from './epub'
 
 const { app, ipcMain, BrowserWindow, Menu } = electron
@@ -70,7 +71,7 @@ app.once('ready', () => {
 	if (option.file == null) return  // default UI
 	
 	Promise.all([
-		event(mainWindow.webContents, 'did-finish-load'),
+		eventToPromise(mainWindow.webContents, 'did-finish-load'),
 		EPub.read(option.file),
 	]).then(([_, epub]) => {
 		openEpub(epub)

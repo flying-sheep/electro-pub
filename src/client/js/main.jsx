@@ -16,7 +16,7 @@ class Splash extends React.Component {
 		return (
 			<div>
 				<p>Select a file from the list or open one</p>
-				<Dropzone onDrop={this.onDrop} multiple={false}>
+				<Dropzone onDrop={Splash.onDrop} multiple={false}>
 					<div style={{ padding: '1rem' }}>Drop an .epub file here or click to select one</div>
 				</Dropzone>
 			</div>

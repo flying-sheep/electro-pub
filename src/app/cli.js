@@ -6,6 +6,7 @@ import eventToPromise from 'event-to-promise'
 
 import createMenuTemplate from './menu-template'
 import EPub from './epub'
+import EPubHandler from './EPubHandler'
 
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]
@@ -47,6 +48,7 @@ let mainWindow = null
 
 function openEpub(epub) {
 	mainWindow.webContents.send('toc', epub.toc)
+	new EPubHandler(epub).register()
 }
 
 app.once('window-all-closed', () => app.quit())

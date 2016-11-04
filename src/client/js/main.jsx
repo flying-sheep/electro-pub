@@ -24,16 +24,14 @@ class Splash extends React.Component {
 	}
 }
 
+function renderChapter(toc) {
+	ReactDOM.render(<Chapter chapter={`epub:${toc.href}`}/>, document.getElementById('main'))
+}
+
 ipcRenderer.on('toc', (e, toc) => {
 	window.toc = toc
 	
-	ReactDOM.render(<Toc nodes={toc}/>, document.getElementById('toc'))
-})
-
-ipcRenderer.on('chapter', (e, chapter) => {
-	window.chapter = chapter
-	
-	ReactDOM.render(<Chapter chapter={chapter}/>, document.getElementById('main'))
+	ReactDOM.render(<Toc nodes={toc} onNodeClick={renderChapter}/>, document.getElementById('toc'))
 })
 
 document.addEventListener('DOMContentLoaded', () => {

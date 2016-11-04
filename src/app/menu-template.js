@@ -1,6 +1,6 @@
-import electron from 'electron'
+import { BrowserWindow, shell } from 'electron'
 
-const { BrowserWindow, shell: { openExternal } } = electron
+const { openExternal } = shell
 
 function createDarwinTemplate(app) {
 	return [

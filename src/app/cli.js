@@ -1,13 +1,11 @@
 import 'source-map-support/register'
 
-import electron from 'electron'
+import { app, ipcMain, BrowserWindow, Menu } from 'electron'
 
 import eventToPromise from 'event-to-promise'
 
 import createMenuTemplate from './menu-template'
 import EPub from './epub'
-
-const { app, ipcMain, BrowserWindow, Menu } = electron
 
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]

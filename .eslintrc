@@ -1,5 +1,6 @@
 {
   "extends": "flying-sheep",
+  "parser": "babel-eslint",
   "settings": {
     "import/core-modules": ["electron"]
   },

@@ -20,7 +20,7 @@ export default {
 	target: 'electron',
 	entry: {
 		app:    `${paths.app.js}/cli.js`,
-		client: `${paths.client.js}/main.js`,
+		client: `${paths.client.js}/main.jsx`,
 	},
 	output: {
 		path: paths.build,
@@ -28,6 +28,9 @@ export default {
 	},
 	devServer: {
 		contentBase: paths.build,
+	},
+	resolve: {
+		extensions: ['.js', '.jsx'],
 	},
 	module: {
 		loaders: [

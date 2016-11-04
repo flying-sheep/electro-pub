@@ -18,12 +18,13 @@
   },
   "devDependencies": {
     "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.0",
     "babel-loader": "^6.2.7",
     "babel-plugin-transform-class-properties": "^6.18.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "copy-webpack-plugin": "^4.0.0",
-    "eslint-config-flying-sheep": "^1.0.1",
+    "eslint-config-flying-sheep": "^1.1.0",
     "webpack": "^2.1.0-beta.25"
   },
   "scripts": {

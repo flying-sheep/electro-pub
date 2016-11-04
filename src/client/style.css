@@ -44,6 +44,7 @@ pre {
 	line-height: 300px;
 	text-align: center;
 	-webkit-user-select: none;
+	user-select: none;
 }
 #holder.hover {
 	border: 4px dashed #999;

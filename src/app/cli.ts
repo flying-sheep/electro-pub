@@ -1,16 +1,16 @@
-import 'source-map-support/register'
-
 import { app, ipcMain, BrowserWindow, Menu } from 'electron'
 
-import eventToPromise from 'event-to-promise'
+import * as eventToPromise from 'event-to-promise'
 
 import createMenuTemplate from './menu-template'
 import EPub from './epub'
 import EPubHandler from './EPubHandler'
 
+process.on('unhandledRejection', console.error)
+
 // Parse command line options.
 const argv = process.argv.slice(2)  // ['electron', 'appname', ...]
-const option = { file: null, help: false, version: false }
+const option = { file: null as string | null, help: false, version: false }
 for (const arg of argv) {
 	if (new Set(['--version', '-v']).has(arg)) {
 		option.version = true
@@ -44,20 +44,23 @@ Options:
 	process.exit(0)
 }
 
-let mainWindow = null
-
-function openEpub(epub) {
-	mainWindow.webContents.send('toc', epub.toc)
-	new EPubHandler(epub).register()
-}
-
 app.once('window-all-closed', () => app.quit())
 
-app.once('ready', () => {
+async function loadInitial(mainWindow: Electron.BrowserWindow, openEpub: Function, path: string) {
+	const [epub, _] = await Promise.all([
+		EPub.read(path),
+		eventToPromise(mainWindow.webContents, 'did-finish-load'),
+	])
+	openEpub(epub)
+}
+
+async function start() {
+	await eventToPromise(app, 'ready')
+	
 	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
 	Menu.setApplicationMenu(menu)
 	
-	mainWindow = new BrowserWindow({
+	const mainWindow = new BrowserWindow({
 		width: 800,
 		height: 600,
 		autoHideMenuBar: true,
@@ -66,22 +69,21 @@ app.once('ready', () => {
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()
 	
+	function openEpub(epub: EPub) {
+		mainWindow.webContents.send('toc', epub.toc)
+		new EPubHandler(epub).register()
+	}
+	
 	// mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
 	
-	if (option.file == null) return  // default UI
+	if (option.file != null) {
+		loadInitial(mainWindow, openEpub, option.file)
+	}  // else default UI
 	
-	Promise.all([
-		eventToPromise(mainWindow.webContents, 'did-finish-load'),
-		EPub.read(option.file),
-	]).then(([_, epub]) => {
-		openEpub(epub)
-	}).catch((e) => {
-		console.error(e)
-		throw e
+	ipcMain.on('open', (e, path) => {
+		console.log(path)
+		EPub.read(path).then(openEpub)
 	})
-})
+}
 
-ipcMain.on('open', (e, path) => {
-	console.log(path)
-	EPub.read(path).then(openEpub)
-})
+start()

@@ -1,0 +1,16 @@
+{
+	// See https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"sourceMap": true,
+		"allowSyntheticDefaultImports": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"jsx": "react"
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

@@ -1,7 +1,8 @@
-import webpack from 'webpack'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { DefinePlugin, NoErrorsPlugin } from 'webpack'
 
-import packageInfo from './package.json'
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const packageInfo = require('./package.json')
 
 const paths = {
 	package_json: `${__dirname}/'package.json'`,
@@ -19,8 +20,8 @@ const paths = {
 export default {
 	target: 'electron',
 	entry: {
-		app:    `${paths.app.js}/cli.js`,
-		client: `${paths.client.js}/main.jsx`,
+		app:    `${paths.app.js}/cli.ts`,
+		client: `${paths.client.js}/main.tsx`,
 	},
 	output: {
 		path: paths.build,
@@ -30,13 +31,13 @@ export default {
 		contentBase: paths.build,
 	},
 	resolve: {
-		extensions: ['.js', '.jsx'],
+		extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	},
 	module: {
 		loaders: [
 			{
-				loader: 'babel-loader',
-				test: paths.client.js,
+				loader: 'ts-loader',
+				test: [paths.client.js, paths.app.js],
 			},
 		],
 	},
@@ -45,12 +46,12 @@ export default {
 			{ from: paths.client.css },
 			{ from: paths.client.html },
 		]),
-		new webpack.DefinePlugin({
+		new DefinePlugin({
 			'process.versions': {
 				electroPub: JSON.stringify(packageInfo.version),
 			},
 		}),
-		new webpack.NoErrorsPlugin(),
+		new NoErrorsPlugin(),
 	],
 	stats: {
 		colors: true,

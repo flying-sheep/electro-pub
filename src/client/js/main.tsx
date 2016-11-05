@@ -1,15 +1,16 @@
+import { TableOfContents } from '../../app/epub'
+
 import { ipcRenderer } from 'electron'
 
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Dropzone from 'react-dropzone'
+import * as React from 'react'
+import { render } from 'react-dom'
+import * as Dropzone from 'react-dropzone'
 
 import Toc from './components/Toc'
 import Chapter from './components/Chapter'
 
-
-class Splash extends React.Component {
-	static onDrop(files) {
+class Splash extends React.Component<{}, {}> {
+	static onDrop(files: File[]) {
 		ipcRenderer.send('open', files[0].path)
 	}
 	render() {
@@ -24,16 +25,14 @@ class Splash extends React.Component {
 	}
 }
 
-function renderChapter(toc) {
-	ReactDOM.render(<Chapter chapter={`epub:${toc.href}`}/>, document.getElementById('main'))
+function renderChapter(toc: TableOfContents) {
+	render(<Chapter chapter={`epub:${toc.href}`}/>, document.getElementById('main'))
 }
 
 ipcRenderer.on('toc', (e, toc) => {
-	window.toc = toc
-	
-	ReactDOM.render(<Toc nodes={toc} onNodeClick={renderChapter}/>, document.getElementById('toc'))
+	render(<Toc nodes={toc} onNodeClick={renderChapter}/>, document.getElementById('toc'))
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-	ReactDOM.render(<Splash/>, document.getElementById('main'))
+	render(<Splash/>, document.getElementById('main'))
 })

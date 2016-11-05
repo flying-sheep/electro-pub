@@ -2,42 +2,36 @@ import { BrowserWindow, shell } from 'electron'
 
 const { openExternal } = shell
 
-function createDarwinTemplate(app) {
+function createDarwinTemplate(app: Electron.App): Electron.MenuItemOptions[] {
 	return [
 		{
 			label: 'Electron',
 			submenu: [
 				{
 					label: 'About Electron',
-					selector: 'orderFrontStandardAboutPanel:',
+					role: 'about',
 				},
-				{
-					type: 'separator',
-				},
+				{ type: 'separator' },
 				{
 					label: 'Services',
 					submenu: [],
 				},
-				{
-					type: 'separator',
-				},
+				{ type: 'separator' },
 				{
 					label: 'Hide Electron',
 					accelerator: 'Command+H',
-					selector: 'hide:',
+					role: 'hide',
 				},
 				{
 					label: 'Hide Others',
 					accelerator: 'Command+Shift+H',
-					selector: 'hideOtherApplications:',
+					role: 'hideothers',
 				},
 				{
 					label: 'Show All',
-					selector: 'unhideAllApplications:',
+					role: 'unhide',
 				},
-				{
-					type: 'separator',
-				},
+				{ type: 'separator' },
 				{
 					label: 'Quit',
 					accelerator: 'Command+Q',
@@ -51,35 +45,33 @@ function createDarwinTemplate(app) {
 				{
 					label: 'Undo',
 					accelerator: 'Command+Z',
-					selector: 'undo:',
+					role: 'undo',
 				},
 				{
 					label: 'Redo',
 					accelerator: 'Shift+Command+Z',
-					selector: 'redo:',
+					role: 'redo',
 				},
-				{
-					type: 'separator',
-				},
+				{ type: 'separator' },
 				{
 					label: 'Cut',
 					accelerator: 'Command+X',
-					selector: 'cut:',
+					role: 'cut',
 				},
 				{
 					label: 'Copy',
 					accelerator: 'Command+C',
-					selector: 'copy:',
+					role: 'copy',
 				},
 				{
 					label: 'Paste',
 					accelerator: 'Command+V',
-					selector: 'paste:',
+					role: 'paste',
 				},
 				{
 					label: 'Select All',
 					accelerator: 'Command+A',
-					selector: 'selectAll:',
+					role: 'selectall',
 				},
 			],
 		},
@@ -107,7 +99,7 @@ function createDarwinTemplate(app) {
 					accelerator: 'Alt+Command+I',
 					click() {
 						const focusedWindow = BrowserWindow.getFocusedWindow()
-						if (focusedWindow) focusedWindow.toggleDevTools()
+						if (focusedWindow) focusedWindow.webContents.toggleDevTools()
 					},
 				},
 			],
@@ -118,19 +110,17 @@ function createDarwinTemplate(app) {
 				{
 					label: 'Minimize',
 					accelerator: 'Command+M',
-					selector: 'performMiniaturize:',
+					role: 'minimize',
 				},
 				{
 					label: 'Close',
 					accelerator: 'Command+W',
-					selector: 'performClose:',
+					role: 'close',
 				},
-				{
-					type: 'separator',
-				},
+				{ type: 'separator' },
 				{
 					label: 'Bring All to Front',
-					selector: 'arrangeInFront:',
+					role: 'front',
 				},
 			],
 		},
@@ -158,7 +148,7 @@ function createDarwinTemplate(app) {
 	]
 }
 
-function createLinWinTemplate() {
+function createLinWinTemplate(): Electron.MenuItemOptions[] {
 	return [
 		{
 			label: '&File',
@@ -201,7 +191,7 @@ function createLinWinTemplate() {
 					accelerator: 'Shift+Ctrl+I',
 					click() {
 						const focusedWindow = BrowserWindow.getFocusedWindow()
-						if (focusedWindow) focusedWindow.toggleDevTools()
+						if (focusedWindow) focusedWindow.webContents.toggleDevTools()
 					},
 				},
 			],
@@ -230,6 +220,6 @@ function createLinWinTemplate() {
 	]
 }
 
-export default function createMenuTemplate(app) {
+export default function createMenuTemplate(app: Electron.App): Electron.MenuItemOptions[] {
 	return (process.platform === 'darwin') ? createDarwinTemplate(app) : createLinWinTemplate()
 }

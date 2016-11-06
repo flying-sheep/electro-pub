@@ -46,14 +46,6 @@ Options:
 
 app.once('window-all-closed', () => app.quit())
 
-async function loadInitial(mainWindow: Electron.BrowserWindow, openEpub: Function, path: string) {
-	const [epub, _] = await Promise.all([
-		EPub.read(path),
-		eventToPromise(mainWindow.webContents, 'did-finish-load'),
-	])
-	openEpub(epub)
-}
-
 async function start() {
 	await eventToPromise(app, 'ready')
 	
@@ -69,13 +61,16 @@ async function start() {
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()
 	
+	const contentsReady = eventToPromise(mainWindow.webContents, 'did-finish-load')
+	
 	function openEpub(epub: EPub) {
 		mainWindow.webContents.send('toc', epub.toc)
 		new EPubHandler(epub).register()
 	}
 	
 	if (option.file != null) {
-		loadInitial(mainWindow, openEpub, option.file)
+		Promise.all([EPub.read(option.file), contentsReady])
+			.then(([epub, _]) => openEpub(epub))
 	}  // else default UI
 	
 	ipcMain.on('open', (e, path) => {

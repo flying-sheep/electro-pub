@@ -1,6 +1,7 @@
 import { DefinePlugin, NoErrorsPlugin } from 'webpack'
 
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+import * as CopyWebpackPlugin from 'copy-webpack-plugin'
+
 
 const packageInfo = require('./package.json')
 

@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.30",
+    "@types/copy-webpack-plugin": "^4.0.0",
     "@types/electron": "^1.4.25",
     "@types/event-to-promise": "^0.7.0",
     "@types/react": "^0.14.44",

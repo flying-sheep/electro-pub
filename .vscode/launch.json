@@ -1,0 +1,17 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{  // http://electron.rocks/debugging-electron-in-vs-code-revised/
+			"name": "Debug",
+			"type": "chrome",
+			"request": "launch",
+			"runtimeExecutable": "electron",
+			"runtimeArgs": [
+				"${workspaceRoot}",
+				"--enable-logging",
+				"--remote-debugging-port=9222"
+			],
+			"sourceMaps": true
+		}
+	]
+}

@@ -1,5 +1,6 @@
 import { DefinePlugin, NoErrorsPlugin } from 'webpack'
 
+import * as BitBarWebpackProgressPlugin from 'bitbar-webpack-progress-plugin'
 import * as CopyWebpackPlugin from 'copy-webpack-plugin'
 
 
@@ -27,6 +28,7 @@ export default {
 	output: {
 		path: paths.build,
 		filename: '[name].js',
+		devtoolModuleFilenameTemplate: 'file://[absolute-resource-path]'
 	},
 	devServer: {
 		contentBase: paths.build,
@@ -43,6 +45,7 @@ export default {
 		],
 	},
 	plugins: [
+		new BitBarWebpackProgressPlugin(),
 		new CopyWebpackPlugin([
 			{ from: paths.client.css },
 			{ from: paths.client.html },

@@ -5,10 +5,10 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"sourceMap": true,
-		"allowSyntheticDefaultImports": true,
+		"jsx": "react",
 		"noImplicitAny": true,
 		"strictNullChecks": true,
-		"jsx": "react"
+		"forceConsistentCasingInFileNames": true
 	},
 	"exclude": [
 		"node_modules"

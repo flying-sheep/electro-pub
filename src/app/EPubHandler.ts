@@ -14,7 +14,6 @@ export default class EPubHandler {
 		callback({
 			data: item.data,
 			mimeType: item.mime,
-			charset: 'utf8',
 		})
 	}
 

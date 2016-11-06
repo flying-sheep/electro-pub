@@ -8,11 +8,11 @@ export const SCHEME = 'epub'
 export default class EPubHandler {
 	constructor(readonly epub: EPub) {}
 	
-	handleRequest(request: Electron.ProtocolRequest, callback: Function) {
+	handleRequest: Electron.BufferProtocolHandler = (request: Electron.ProtocolRequest, callback: Electron.BufferProtocolCallback) => {
 		const path = request.url.substr(SCHEME.length + 1)
 		const item = this.epub.manifest[path]
 		callback({
-			data: item.data.toString(),
+			data: item.data,
 			mimeType: item.mime,
 			charset: 'utf8',
 		})
@@ -26,6 +26,6 @@ export default class EPubHandler {
 	}
 
 	registerOnly() {
-		protocol.registerStringProtocol(SCHEME, this.handleRequest.bind(this))
+		protocol.registerBufferProtocol(SCHEME, this.handleRequest)
 	}
 }

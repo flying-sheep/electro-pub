@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 
-interface ChapterProps {
+export interface ChapterProps {
 	chapter: string,
 }
 

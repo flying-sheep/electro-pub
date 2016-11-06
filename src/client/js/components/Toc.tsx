@@ -2,12 +2,12 @@ import { TableOfContents } from '../../../app/epub'
 
 import * as React from 'react'
 
-import TocNode from './TocNode'
+import TocNode, { TocNodeClickHandler } from './TocNode'
 
 
-interface TocProps {
+export interface TocProps {
 	nodes: TableOfContents[],
-	onNodeClick: Function,
+	onNodeClick: TocNodeClickHandler,
 }
 
 export default class Toc extends React.Component<TocProps, {}> {

@@ -5,9 +5,13 @@ import * as React from 'react'
 import Toc from './Toc'
 
 
-interface TocNodeProps {
+export interface TocNodeClickHandler {
+	(toc: TableOfContents): void			
+}
+
+export interface TocNodeProps {
 	toc: TableOfContents,
-	onNodeClick: Function,
+	onNodeClick: TocNodeClickHandler,
 }
 
 export default class TocNode extends React.Component<TocNodeProps, {}> {

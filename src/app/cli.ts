@@ -74,8 +74,6 @@ async function start() {
 		new EPubHandler(epub).register()
 	}
 	
-	// mainWindow.webContents.session.setProxy('ebook=ebook', () => null)
-	
 	if (option.file != null) {
 		loadInitial(mainWindow, openEpub, option.file)
 	}  // else default UI

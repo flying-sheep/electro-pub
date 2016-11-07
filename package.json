@@ -9,6 +9,7 @@
   "dependencies": {
     "adm-zip": "^0.4",
     "event-to-promise": "^0.7.0",
+    "mz": "^2.5.0",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.7.2",
@@ -20,6 +21,7 @@
     "@types/copy-webpack-plugin": "^4.0.0",
     "@types/electron": "^1.4.25",
     "@types/event-to-promise": "^0.7.0",
+    "@types/mz": "0.0.30",
     "@types/react": "^0.14.44",
     "@types/react-dom": "^0.14.18",
     "@types/react-dropzone": "0.0.28",

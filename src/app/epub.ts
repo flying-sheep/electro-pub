@@ -1,5 +1,5 @@
 import { join, dirname } from 'path'
-import * as fs from 'fs'
+import { fs } from 'mz'
 
 import * as AdmZip from 'adm-zip'
 import { parseString } from 'xml2js'
@@ -94,12 +94,8 @@ export default class EPub {
 	 * @return      Promise that resolves to an \link EPub object
 	 */
 	static async read(path: string) {
-		if (path == null) {
-			throw new EPubError('‘path’ needs to be a file path string, not null/undefined')
-		}
-		
 		try {
-			fs.accessSync(path, fs.constants.R_OK)
+			await fs.access(path, fs.constants.R_OK)
 		} catch (e) {
 			throw new EPubError(`The given path ‘${path}’ is not readable: ${e.code}`)
 		}

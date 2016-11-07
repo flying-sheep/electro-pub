@@ -39,7 +39,7 @@ export default {
 	module: {
 		loaders: [
 			{
-				loader: 'ts-loader',
+				loader: 'awesome-typescript-loader',
 				test: [paths.client.js, paths.app.js],
 			},
 		],

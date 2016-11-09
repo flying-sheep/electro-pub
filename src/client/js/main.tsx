@@ -1,3 +1,4 @@
+import '../style.css'
 import { TableOfContents } from '../../app/epub'
 
 import { ipcRenderer } from 'electron'
@@ -17,8 +18,9 @@ class Splash extends React.Component<{}, {}> {
 		return (
 			<div>
 				<p>Select a file from the list or open one</p>
-				<Dropzone onDrop={Splash.onDrop} multiple={false}>
-					<div style={{ padding: '1rem' }}>Drop an .epub file here or click to select one</div>
+				<Dropzone onDrop={Splash.onDrop} multiple={false} className="drop-zone" activeClassName="active">
+					Drop an .epub file here<br/>
+					or click to select one
 				</Dropzone>
 			</div>
 		)

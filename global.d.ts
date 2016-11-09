@@ -15,3 +15,14 @@ declare module 'bitbar-webpack-progress-plugin' {
     const bitBarWebpackProgressPlugin: BitBarWebpackProgressPlugin
     export = bitBarWebpackProgressPlugin
 }
+
+
+declare module 'postcss-cssnext' {
+    
+}
+
+declare module 'autoprefixer' {
+    function autoprefixer(options?: any): any;
+    namespace autoprefixer {}
+    export = autoprefixer
+}

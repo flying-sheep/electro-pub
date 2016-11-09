@@ -1,8 +1,10 @@
-import { DefinePlugin, NoErrorsPlugin } from 'webpack'
+import { DefinePlugin, NoErrorsPlugin, Configuration } from 'webpack'
 
-import * as BitBarWebpackProgressPlugin from 'bitbar-webpack-progress-plugin'
-import * as CopyWebpackPlugin from 'copy-webpack-plugin'
+import * as BitBarProgressPlugin from 'bitbar-webpack-progress-plugin'
+import * as CopyPlugin from 'copy-webpack-plugin'
+import * as ExtractTextPlugin from 'extract-text-webpack-plugin'
 
+//import * as cssnext from 'postcss-cssnext'
 
 const packageInfo = require('./package.json')
 
@@ -19,7 +21,7 @@ const paths = {
 	},
 }
 
-export default {
+const config: Configuration = {
 	target: 'electron',
 	entry: {
 		app:    `${paths.app.js}/cli.ts`,
@@ -34,22 +36,41 @@ export default {
 		contentBase: paths.build,
 	},
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx'],
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
-				loader: 'awesome-typescript-loader',
 				test: [paths.client.js, paths.app.js],
+				loader: 'awesome-typescript-loader',
+			},
+			{
+				test: [paths.client.css],
+				loader: ExtractTextPlugin.extract({
+					//fallbackLoader: 'style-loader',
+					loader: [
+						//bug: ExtractTextPlugin only knows query, not options
+						{ loader: 'css-loader', query: { importLoaders: 1 } },
+						{
+							loader: 'postcss-loader',
+							/*query: {
+								map: true,
+								plugins: [
+									cssnext,
+								],
+							},*/
+						},
+					],
+				}),
 			},
 		],
 	},
 	plugins: [
-		new BitBarWebpackProgressPlugin(),
-		new CopyWebpackPlugin([
-			{ from: paths.client.css },
+		new BitBarProgressPlugin(),
+		new CopyPlugin([
 			{ from: paths.client.html },
 		]),
+		new ExtractTextPlugin('style.css'),
 		new DefinePlugin({
 			'process.versions': {
 				electroPub: JSON.stringify(packageInfo.version),
@@ -65,3 +86,5 @@ export default {
 	},
 	devtool: 'source-map',
 }
+
+export default config

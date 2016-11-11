@@ -6,13 +6,13 @@ import * as React from 'react'
 import Toc from './Toc'
 import Chapter from './Chapter'
 
-export interface LoadedMainProps {
+export interface ReaderProps {
 	toc: TableOfContents[]
 	chapter: TableOfContents
 	loadChapter: (toc: TableOfContents) => void
 }
 
-export default class LoadedMain extends React.Component<LoadedMainProps, {}> {
+export default class Reader extends React.Component<ReaderProps, {}> {
 	render() {
 		const { toc, chapter, loadChapter } = this.props
 		if (toc === null) return null

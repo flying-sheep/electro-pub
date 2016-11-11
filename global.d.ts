@@ -5,7 +5,7 @@ declare namespace NodeJS {
 }
 
 declare module 'react-electron-webview' {
-    interface WebViewProps {
+    interface WebViewProps extends React.HTMLProps<Electron.WebViewElement> {
         src: string,
         
         autosize?: boolean,

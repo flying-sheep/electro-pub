@@ -40,6 +40,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-no-foreach": "^1.0.0",
     "eslint-plugin-react": "^6.5.0",
+    "goog-webfont-dl": "^0.4.1",
     "postcss": "^5.2.5",
     "postcss-cssnext": "^2.8.0",
     "postcss-epub": "^3.0.0",
@@ -51,6 +52,8 @@
     "webpack": "^2.1.0-beta.25"
   },
   "scripts": {
+    "install-fonts": "goog-webfont-dl -Wf 'Crimson Text' -o build/fonts.css -d build/fonts -p fonts",
+    "prebuild": "npm run install-fonts",
     "build": "webpack",
     "watch": "webpack --watch"
   }

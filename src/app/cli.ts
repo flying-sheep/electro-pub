@@ -61,6 +61,9 @@ async function start() {
 		height: 600,
 		autoHideMenuBar: true,
 		useContentSize: true,
+		webPreferences: {
+			blinkFeatures: 'OverlayScrollbars',
+		},
 	})
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()

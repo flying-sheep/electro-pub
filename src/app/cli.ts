@@ -1,10 +1,10 @@
-import { app, ipcMain, BrowserWindow, Menu } from 'electron'
+import { app, protocol, ipcMain, BrowserWindow, Menu } from 'electron'
 
 import * as eventToPromise from 'event-to-promise'
 
 import createMenuTemplate from './menu-template'
 import EPub from './epub'
-import EPubHandler from './EPubHandler'
+import { EPubHandler, AssetHandler } from './handlers'
 
 process.on('unhandledRejection', console.error)
 
@@ -46,8 +46,12 @@ Options:
 
 app.once('window-all-closed', () => app.quit())
 
+protocol.registerStandardSchemes([EPubHandler.SCHEME, AssetHandler.SCHEME])
+
 async function start() {
 	await eventToPromise(app, 'ready')
+
+	//new AssetHandler().register()
 	
 	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
 	Menu.setApplicationMenu(menu)

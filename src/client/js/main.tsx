@@ -1,5 +1,6 @@
 import '../style.css'
 import { TableOfContents } from '../../app/epub'
+import { EPubHandler, AssetHandler } from '../../app/handlers'
 
 import { ipcRenderer } from 'electron'
 
@@ -28,7 +29,7 @@ class Splash extends React.Component<{}, {}> {
 }
 
 function renderChapter(toc: TableOfContents) {
-	render(<Chapter chapter={`epub:${toc.href}`}/>, document.getElementById('main'))
+	render(<Chapter chapter={`${EPubHandler.prefix}/${toc.href}`}/>, document.getElementById('main'))
 }
 
 ipcRenderer.on('toc', (e, toc) => {

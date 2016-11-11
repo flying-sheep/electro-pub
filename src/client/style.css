@@ -3,9 +3,14 @@
 }
 
 body {
+	display: flex;
+	align-items: stretch;
+	
+	padding: 0;
+	margin: 1rem;
+	
 	color: #555;
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-	padding: 30px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -40,7 +45,28 @@ pre {
 	padding: 6px 10px;
 }
 
+.flex-transparent {
+	flex-grow: 1;
+	display: flex;
+	align-items: stretch;
+}
+
+nav > ul {
+	margin: 0;
+	padding: 0;
+	
+	& > li {
+		list-style: none;
+	}
+}
+
+.chapter {
+	flex-grow: 1;
+}
+
 .drop-zone {
+	flex-grow: 1;
+	
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -48,8 +74,6 @@ pre {
 	
 	border: 4px dashed #ccc;
 	color: #ccc;
-	margin: 0 auto;
-	height: 300px;
 	font-size: 40px;
 	user-select: none;
 	cursor: pointer;

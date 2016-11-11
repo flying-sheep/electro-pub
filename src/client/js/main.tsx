@@ -1,6 +1,5 @@
 import '../style.css'
 import { TableOfContents } from '../../app/epub'
-import { EPubHandler, AssetHandler } from '../../app/handlers'
 
 import { ipcRenderer } from 'electron'
 
@@ -8,17 +7,31 @@ import * as React from 'react'
 import { render } from 'react-dom'
 
 import Splash from './components/Splash'
-import Toc from './components/Toc'
-import Chapter from './components/Chapter'
+import Reader from './components/Reader'
 
-function renderChapter(toc: TableOfContents) {
-	render(<Chapter chapter={`${EPubHandler.prefix}/${toc.href}`}/>, document.getElementById('main'))
+interface MainStateLoaded {
+	toc: TableOfContents[]
+	chapter: TableOfContents
 }
 
-ipcRenderer.on('toc', (e, toc) => {
-	render(<Toc nodes={toc} onNodeClick={renderChapter}/>, document.getElementById('toc'))
-})
+class Main extends React.Component<{}, MainStateLoaded | null> {
+	constructor() {
+		super()
+		this.state = null
+		ipcRenderer.on('toc', (e, toc: TableOfContents[]) => {
+			this.setState({ toc, chapter: toc[0] })
+		})
+	}
+	loadChapter = (chapter: TableOfContents) => {
+		this.setState(({ toc }: MainStateLoaded) => ({ toc, chapter }))
+	}
+	render() {
+		if (this.state === null) return <Splash/>
+		const { toc, chapter } = this.state
+		return <Reader toc={toc} chapter={chapter} loadChapter={this.loadChapter}/>
+	}
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-	render(<Splash/>, document.getElementById('main'))
+	render(<Main/>, document.body)
 })

@@ -9,13 +9,10 @@ export default class Splash extends React.Component<{}, {}> {
 	}
 	render() {
 		return (
-			<div>
-				<p>Select a file from the list or open one</p>
-				<Dropzone onDrop={Splash.onDrop} multiple={false} className="drop-zone" activeClassName="active">
-					Drop an .epub file here<br/>
-					or click to select one
-				</Dropzone>
-			</div>
+            <Dropzone onDrop={Splash.onDrop} multiple={false} className="drop-zone" activeClassName="active">
+                Drop an .epub file here<br/>
+                or click to select one
+            </Dropzone>
 		)
 	}
 }

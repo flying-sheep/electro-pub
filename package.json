@@ -8,6 +8,7 @@
   "repository": "https://github.com/flying-sheep/electro-pub",
   "dependencies": {
     "adm-zip": "^0.4",
+    "commander": "^2.9.0",
     "event-to-promise": "^0.7.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "mz": "^2.5.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/adm-zip": "^0.4.30",
+    "@types/commander": "^2.3.30",
     "@types/copy-webpack-plugin": "^4.0.0",
     "@types/electron": "^1.4.25",
     "@types/event-to-promise": "^0.7.0",

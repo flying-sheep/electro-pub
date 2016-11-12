@@ -30,6 +30,7 @@ async function start() {
 	})
 	const mainWindow = new BrowserWindow({
 		x, y, width, height,
+		show: false,
 		autoHideMenuBar: true,
 		useContentSize: true,
 		webPreferences: {
@@ -38,9 +39,13 @@ async function start() {
 	})
 	manage(mainWindow)
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
-	mainWindow.focus()
 	
 	const contentsReady = eventToPromise(mainWindow.webContents, 'did-finish-load')
+	
+	contentsReady.then(() => {
+		mainWindow.show()
+		mainWindow.focus()
+	})
 	
 	function openEpub(epub: EPub) {
 		mainWindow.webContents.send('toc', epub.toc)

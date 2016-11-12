@@ -1,10 +1,10 @@
 import { app, protocol, ipcMain, BrowserWindow, Menu } from 'electron'
 
-import windowStateKeeper = require('electron-window-state')
 import * as eventToPromise from 'event-to-promise'
 
 import parseArguments from './argument-parser'
 import createMenuTemplate from './menu-template'
+import createMainWindow from './main-window-creator'
 import EPub from './epub'
 import { EPubHandler, AssetHandler } from './handlers'
 
@@ -24,20 +24,7 @@ async function start() {
 	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
 	Menu.setApplicationMenu(menu)
 	
-	const { x, y, width, height, manage } = windowStateKeeper({
-		defaultWidth: 800,
-		defaultHeight: 600,
-	})
-	const mainWindow = new BrowserWindow({
-		x, y, width, height,
-		show: false,
-		autoHideMenuBar: true,
-		useContentSize: true,
-		webPreferences: {
-			blinkFeatures: 'OverlayScrollbars',
-		},
-	})
-	manage(mainWindow)
+	const mainWindow = createMainWindow()
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	
 	const contentsReady = eventToPromise(mainWindow.webContents, 'did-finish-load')

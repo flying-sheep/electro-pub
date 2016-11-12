@@ -33,5 +33,5 @@ class Main extends React.Component<{}, MainStateLoaded | null> {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	render(<Main/>, document.body)
+	render(<Main/>, document.getElementById('mount'))
 })

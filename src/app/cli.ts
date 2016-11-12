@@ -1,5 +1,6 @@
 import { app, protocol, ipcMain, BrowserWindow, Menu } from 'electron'
 
+import windowStateKeeper = require('electron-window-state')
 import * as eventToPromise from 'event-to-promise'
 
 import parseArguments from './argument-parser'
@@ -23,15 +24,19 @@ async function start() {
 	const menu = Menu.buildFromTemplate(createMenuTemplate(app))
 	Menu.setApplicationMenu(menu)
 	
+	const { x, y, width, height, manage } = windowStateKeeper({
+		defaultWidth: 800,
+		defaultHeight: 600,
+	})
 	const mainWindow = new BrowserWindow({
-		width: 800,
-		height: 600,
+		x, y, width, height,
 		autoHideMenuBar: true,
 		useContentSize: true,
 		webPreferences: {
 			blinkFeatures: 'OverlayScrollbars',
 		},
 	})
+	manage(mainWindow)
 	mainWindow.loadURL(`file://${__dirname}/index.html`)
 	mainWindow.focus()
 	

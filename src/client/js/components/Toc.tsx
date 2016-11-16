@@ -1,4 +1,4 @@
-import { TableOfContents } from '../../../app/epub'
+import { TOCNode } from '../../../shared/epub'
 
 import * as React from 'react'
 
@@ -6,7 +6,7 @@ import TocNode, { TocNodeClickHandler } from './TocNode'
 
 
 export interface TocProps {
-	nodes: TableOfContents[],
+	nodes: TOCNode[],
 	onNodeClick: TocNodeClickHandler,
 }
 

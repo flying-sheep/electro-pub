@@ -1,37 +1,19 @@
 import '../style.css'
-import { TableOfContents } from '../../app/epub'
 
 import { ipcRenderer } from 'electron'
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { getInitialStateRenderer } from 'electron-redux'
 
-import Splash from './components/Splash'
-import Reader from './components/Reader'
+import { TOCNode } from '../../shared/epub'
+import configureStore from '../../shared/store'
 
-interface MainStateLoaded {
-	toc: TableOfContents[]
-	chapter: TableOfContents
-}
+import Main from './containers/Main'
 
-class Main extends React.Component<{}, MainStateLoaded | null> {
-	constructor() {
-		super()
-		this.state = null
-		ipcRenderer.on('toc', (e, toc: TableOfContents[]) => {
-			this.setState({ toc, chapter: toc[0] })
-		})
-	}
-	loadChapter = (chapter: TableOfContents) => {
-		this.setState(({ toc }: MainStateLoaded) => ({ toc, chapter }))
-	}
-	render() {
-		if (this.state === null) return <Splash/>
-		const { toc, chapter } = this.state
-		return <Reader toc={toc} chapter={chapter} loadChapter={this.loadChapter}/>
-	}
-}
+const store = configureStore(getInitialStateRenderer(), 'renderer')
 
 document.addEventListener('DOMContentLoaded', () => {
-	render(<Main/>, document.getElementById('mount'))
+	render(<Provider store={store}><Main/></Provider>, document.getElementById('mount'))
 })

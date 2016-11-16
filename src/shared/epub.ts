@@ -41,12 +41,12 @@ export class Item {
  * @param href   (Optional) href to a document
  * @param sub    (Optional) Array of sub-toc objects
  */
-export class TableOfContents {
+export class TOCNode {
 	readonly label: string
-	readonly href: string | undefined
-	readonly sub: TableOfContents[] | undefined
+	readonly href?: string
+	readonly sub?: TOCNode[]
 	
-	constructor(label: string, href?: string, sub?: TableOfContents[] | null) {
+	constructor(label: string, href?: string, sub?: TOCNode[] | null) {
 		this.label = label
 		if (href != null) this.href = href
 		if (sub != null) this.sub = sub 	
@@ -58,16 +58,32 @@ export class TableOfContents {
 	 * @param navPoints  \package xml2js array of \c <navPoint/> nodes
 	 * @return           Table of contents (\link Toc) object
 	 */
-	static fromNavPoints(navPoints: any[]): TableOfContents[];
-	static fromNavPoints(navPoints?: null | undefined): null;
+	static fromNavPoints(navPoints: any[]): TOCNode[];
+	static fromNavPoints(navPoints?: null): null;
 	
 	static fromNavPoints(navPoints?: any[] | null) {
 		if (navPoints == null) return null
-		return navPoints.map(navPoint => new TableOfContents(
+		return navPoints.map(navPoint => new TOCNode(
 			navPoint.navLabel[0].text[0],
 			navPoint.content[0].$.src,
-			TableOfContents.fromNavPoints(navPoint.navPoint)))
+			TOCNode.fromNavPoints(navPoint.navPoint)))
 	}
+	
+	static firstWithContent(toc: TOCNode[]): TOCNodeWithContent | null {
+		for (const node of toc) {
+			if (node.href) {
+				return node as TOCNodeWithContent
+			} else if (node.sub) {
+				const sub = TOCNode.firstWithContent(node.sub)
+				if (sub) return sub
+			}
+		}
+		return null
+	}
+}
+
+export interface TOCNodeWithContent extends TOCNode {
+	readonly href: string
 }
 
 
@@ -84,7 +100,7 @@ export default class EPub {
 	constructor(
 		readonly manifest: { [href: string]: Item },
 		readonly spine: string[],
-		readonly toc: TableOfContents[],
+		readonly toc: TOCNode[],
 	) {}
 	
 	/**
@@ -134,7 +150,7 @@ export default class EPub {
 		const spine: string[] = spineNode.itemref.map((i: any) => id2item[i.$.idref].href)
 		
 		const ncx = await parseXML(id2item[spineNode.$.toc].data.toString('utf8'))
-		const toc = TableOfContents.fromNavPoints(ncx['navMap'][0].navPoint)
+		const toc = TOCNode.fromNavPoints(ncx['navMap'][0].navPoint)
 		
 		return new EPub(manifest, spine, toc)
 	}

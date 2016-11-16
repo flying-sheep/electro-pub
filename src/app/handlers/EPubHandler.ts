@@ -1,4 +1,4 @@
-import EPub from '../epub'
+import EPub from '../../shared/epub'
 
 import Handler from './Handler'
 
@@ -9,7 +9,6 @@ export default class EPubHandler extends Handler {
 	
 	handleRequest: Electron.BufferProtocolHandler = (request: Electron.ProtocolRequest, callback: Electron.BufferProtocolCallback) => {
 		const path = this.getPath(request.url)
-		console.log(path)
 		const item = this.epub.manifest[path]
 		callback({
 			data: item.data,

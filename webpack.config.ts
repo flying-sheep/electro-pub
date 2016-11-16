@@ -36,16 +36,20 @@ const config: Configuration = {
 		contentBase: paths.build,
 	},
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx', '.css'],
+		extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.css'],
 	},
 	module: {
 		rules: [
 			{
-				test: [paths.client.js, paths.app.js],
+				test: /.*\.tsx?/,
 				loader: 'awesome-typescript-loader',
 			},
 			{
-				test: [paths.client.css],
+				test: /.*\.json/,
+				loader: 'json-loader',
+			},
+			{
+				test: /.*\.css/,
 				loader: ExtractTextPlugin.extract({
 					//fallbackLoader: 'style-loader',
 					loader: [
@@ -74,6 +78,7 @@ const config: Configuration = {
 		new DefinePlugin({
 			'process.versions': {
 				electroPub: JSON.stringify(packageInfo.version),
+				electron: '"1.4.6"',
 			},
 		}),
 		new NoErrorsPlugin(),

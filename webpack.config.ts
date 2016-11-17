@@ -30,7 +30,8 @@ const config: Configuration = {
 	output: {
 		path: paths.build,
 		filename: '[name].js',
-		devtoolModuleFilenameTemplate: 'file://[absolute-resource-path]'
+		devtoolModuleFilenameTemplate: 'file://[absolute-resource-path]',
+		devtoolFallbackModuleFilenameTemplate: 'file://[absolute-resource-path]?[hash]',
 	},
 	devServer: {
 		contentBase: paths.build,

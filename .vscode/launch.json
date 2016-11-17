@@ -1,8 +1,19 @@
 {
 	"version": "0.2.0",
 	"configurations": [
+		{  // http://electron.atom.io/docs/tutorial/debugging-main-process-vscode/
+			"name": "Debug Main",
+			"type": "node",
+			"request": "launch",
+			"cwd": "${workspaceRoot}",
+			"runtimeExecutable": "electron",
+			"program": "${workspaceRoot}/build/app.js",
+			"outDir": "${workspaceRoot}/build",
+			"stopOnEntry": false,
+			"sourceMaps": true
+		},
 		{  // http://electron.rocks/debugging-electron-in-vs-code-revised/
-			"name": "Debug",
+			"name": "Debug Renderer",
 			"type": "chrome",
 			"request": "launch",
 			"runtimeExecutable": "electron",

@@ -12,10 +12,10 @@ export default function configureStore(initialState: RootState, scope: 'main' | 
     const middlewares = (scope === 'main') ? [
         triggerAlias,
         //...commonMiddlewares,
-        forwardToRenderer,  // 
+        forwardToRenderer,  // Has to be last
     ] : [
         forwardToMain,  // Has to be first
-        //...commonMiddlewares,Has to be last
+        //...commonMiddlewares,
     ]
     
     const composeEnhancers = (global as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose

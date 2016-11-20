@@ -1,6 +1,8 @@
+import { isType, Action } from 'redux-typescript-actions'
+
 import { TOCNode, TOCNodeWithContent } from '../epub'
 
-import { SET_PATH, SET_TOC, SET_CHAPTER, EPubAction } from '../actions/epub'
+import { setPath, setBook, setChapter } from '../actions/epub'
 
 export interface PathEPubState {
 	path: string
@@ -18,25 +20,21 @@ export function isLoaded(state: EPubState): state is LoadedEPubState {
 	return (state as LoadedEPubState).toc !== undefined
 }
 
-export default function epub(state: EPubState = {}, action: EPubAction): EPubState {
-	switch (action.type) {
-		case SET_PATH: {
-			return { path: action.payload }
+export default function epub(state: EPubState = {}, action: Action<any>): EPubState {
+	if (isType(action, setPath)) {
+		return { path: action.payload }
+	} else if (isType(action, setBook)) {
+		if (!isPathSet(state)) throw new Error(`Action “${setBook}” dispatched while no path is available`)
+		const toc = action.payload
+		const chapter = TOCNode.firstWithContent(toc)
+		if (chapter) {
+			return Object.assign({}, state, { toc, chapter })
+		} else {
+			throw new Error('EBook has no chapters with content?')
 		}
-		case SET_TOC: {
-			if (!isPathSet(state)) throw new Error(`Action “${SET_TOC}” dispatched while no path is available`)
-			const toc = action.payload
-			const chapter = TOCNode.firstWithContent(toc)
-			if (chapter) {
-				return Object.assign({}, state, { toc, chapter })
-			} else {
-				throw new Error('EBook has no chapters with content?')
-			}
-		}
-		case SET_CHAPTER: {
-			if (!isLoaded(state)) throw new Error(`Action “${SET_CHAPTER}” dispatched while no toc is available`)
-			return Object.assign({}, state, { chapter: action.payload })
-		}
+	} else if (isType(action, setChapter)) {
+		if (!isLoaded(state)) throw new Error(`Action “${setChapter}” dispatched while no toc is available`)
+		return Object.assign({}, state, { chapter: action.payload })
 	}
 	return state
 }

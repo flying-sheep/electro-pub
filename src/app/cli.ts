@@ -8,7 +8,7 @@ import * as eventToPromise from 'event-to-promise'
 
 import EPub from '../shared/epub'
 import configureStore from '../shared/store'
-import { setPath, setTOC } from '../shared/actions/epub'
+import { setPath, setBook } from '../shared/actions/epub'
 import { RootState } from '../shared/reducers'
 import { isPathSet, isLoaded } from '../shared/reducers/epub'
 
@@ -51,7 +51,7 @@ async function start() {
 	
 	async function openEpub(epub: EPub) {
 		await new EPubHandler(epub).register()
-		store.dispatch(setTOC(epub.toc))
+		store.dispatch(setBook(epub.toc))
 	}
 	
 	let lastPath = ''

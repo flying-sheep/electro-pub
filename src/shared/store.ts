@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose, Store } from 'redux'
+import * as createLogger from 'redux-logger'
 import {
     forwardToMain,    forwardToRenderer,
     replayActionMain, replayActionRenderer,
@@ -9,13 +10,17 @@ import rootReducer, { RootState } from './reducers'
 
 
 export default function configureStore(initialState: RootState, scope: 'main' | 'renderer'): Store<RootState> {
+    const logger = createLogger()
+    
+    const commonMiddlewares = [logger]
+    
     const middlewares = (scope === 'main') ? [
         triggerAlias,
-        //...commonMiddlewares,
+        ...commonMiddlewares,
         forwardToRenderer,  // Has to be last
     ] : [
         forwardToMain,  // Has to be first
-        //...commonMiddlewares,
+        ...commonMiddlewares,
     ]
     
     const composeEnhancers = (global as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose

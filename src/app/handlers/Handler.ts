@@ -18,14 +18,19 @@ export default class Handler {
 		return url.substr(prefix.length + 1).replace(/\+$/, '')
 	}
 
-	register() {
-		protocol.isProtocolHandled(this.scheme, (handled) => {
-			if (handled) protocol.unregisterProtocol(this.scheme, () => this.registerOnly())
-			else this.registerOnly()
+	register(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const registerAndResolve = () => this.registerOnly().then(resolve)
+			protocol.isProtocolHandled(this.scheme, (handled) => {
+				if (handled) protocol.unregisterProtocol(this.scheme, err => err ? reject(err) : registerAndResolve())
+				else registerAndResolve()
+			})
 		})
 	}
 
-	registerOnly() {
-		protocol.registerBufferProtocol(this.scheme, this.handleRequest)
+	registerOnly(): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			protocol.registerBufferProtocol(this.scheme, this.handleRequest, err => err ? reject(err) : resolve())
+		})
 	}
 }

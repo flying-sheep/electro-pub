@@ -1,5 +1,4 @@
-import { install } from 'source-map-support'
-install()
+import 'source-map-support/register'
 
 import { app, protocol, BrowserWindow, Menu } from 'electron'
 
@@ -10,11 +9,13 @@ import * as eventToPromise from 'event-to-promise'
 import EPub from '../shared/epub'
 import configureStore from '../shared/store'
 import { setPath, setTOC } from '../shared/actions/epub'
-import { isPathSet } from '../shared/reducers/epub'
+import { RootState } from '../shared/reducers'
+import { isPathSet, isLoaded } from '../shared/reducers/epub'
 
 import parseArguments from './argument-parser'
 import createMenuTemplate from './menu-template'
 import createMainWindow from './main-window-creator'
+import storage from './storage'
 import { EPubHandler, AssetHandler } from './handlers'
 
 const { args: files } = parseArguments(...process.argv)
@@ -40,16 +41,17 @@ async function start() {
 	
 	const contentsReady = eventToPromise(mainWindow.webContents, 'did-finish-load')
 	
-	contentsReady.then(() => {
-		mainWindow.show()
-		mainWindow.focus()
+	const storedState = await storage.get('state')
+	const initialState = Object.keys(storedState).length !== 0 ? storedState as RootState : { epub: {} }
+	const store = configureStore(initialState, 'main')
+	
+	store.subscribe(async () => {
+		await storage.set('state', store.getState())
 	})
 	
-	const store = configureStore({ epub: {} }, 'main')  //TODO: load initialstate
-	
-	function openEpub(epub: EPub) {
+	async function openEpub(epub: EPub) {
+		await new EPubHandler(epub).register()
 		store.dispatch(setTOC(epub.toc))
-		new EPubHandler(epub).register()
 	}
 	
 	let lastPath = ''
@@ -60,11 +62,15 @@ async function start() {
 		EPub.read(epub.path).then(openEpub)
 	})
 	
+	await contentsReady
+	
 	if (files.length > 0) {
 		if (files.length > 1) console.warn('You supplied more than one path. Ignoring all but the first…')
-		await contentsReady // we need the renderer store to be ready
-		store.dispatch(setPath(files[0]))
+		store.dispatch(setPath(files[0]))  // we need the renderer store to be ready: contentsReady
 	}  // else default UI
+	
+	mainWindow.show()
+	mainWindow.focus()
 }
 
 start()

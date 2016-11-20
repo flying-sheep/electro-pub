@@ -12,7 +12,8 @@ import configureStore from '../../shared/store'
 
 import Main from './containers/Main'
 
-const store = configureStore(getInitialStateRenderer(), 'renderer')
+const initialState = getInitialStateRenderer()
+const store = configureStore(initialState, 'renderer')
 
 document.addEventListener('DOMContentLoaded', () => {
 	render(<Provider store={store}><Main/></Provider>, document.getElementById('mount'))

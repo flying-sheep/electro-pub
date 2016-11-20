@@ -10,7 +10,6 @@ export interface LoadedEPubState extends PathEPubState {
 	chapter: TOCNodeWithContent
 }
 export type EPubState = {} | PathEPubState | LoadedEPubState
-const initialState: EPubState = {}
 
 export function isPathSet(state: EPubState): state is PathEPubState {
 	return (state as PathEPubState).path !== undefined
@@ -19,7 +18,7 @@ export function isLoaded(state: EPubState): state is LoadedEPubState {
 	return (state as LoadedEPubState).toc !== undefined
 }
 
-export default function epub(state: EPubState = initialState, action: EPubAction): EPubState {
+export default function epub(state: EPubState = {}, action: EPubAction): EPubState {
 	switch (action.type) {
 		case SET_PATH: {
 			return { path: action.payload }
@@ -39,5 +38,5 @@ export default function epub(state: EPubState = initialState, action: EPubAction
 			return Object.assign({}, state, { chapter: action.payload })
 		}
 	}
-	return initialState
+	return state
 }

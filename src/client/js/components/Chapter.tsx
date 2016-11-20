@@ -23,6 +23,6 @@ export default class Chapter extends React.Component<ChapterProps, {}> {
 		}
 	}
 	render() {
-		return <WebView className="chapter" ref="webview" src={this.props.chapter} domReady={this.insertStyle}/>
+		return <WebView className="chapter" ref="webview" src={this.props.chapter} onDomReady={this.insertStyle}/>
 	}
 }

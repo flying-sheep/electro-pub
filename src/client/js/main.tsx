@@ -7,7 +7,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { getInitialStateRenderer } from 'electron-redux'
 
-import { TOCNode } from '../../shared/epub'
+import { NavPoint } from '../../shared/epub'
 import configureStore from '../../shared/store'
 
 import Main from './containers/Main'

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect, MapStateToProps } from 'react-redux'
 
-import { TOCNode, TOCNodeWithContent } from '../../../shared/epub'
+import { NavPoint, NavPointWithContent } from '../../../shared/epub'
 import { setPath, setChapter } from '../../../shared/actions/epub'
 import { RootState } from '../../../shared/reducers'
 
@@ -10,9 +10,9 @@ import Splash from '../components/Splash'
 import Reader from '../components/Reader'
 
 interface MainProps {
-	toc?: TOCNode[]
-	chapter?: TOCNodeWithContent
-	setChapter: (toc: TOCNodeWithContent) => void
+	toc?: NavPoint[]
+	chapter?: NavPointWithContent
+	setChapter: (toc: NavPointWithContent) => void
 	setPath: (path: string) => void
 }
 

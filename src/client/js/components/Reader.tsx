@@ -1,15 +1,15 @@
 import * as React from 'react'
 
 import { EPubHandler } from '../../../app/handlers'
-import { TOCNode, TOCNodeWithContent } from '../../../shared/epub'
+import { NavPoint, NavPointWithContent } from '../../../shared/epub'
 
 import Toc from './Toc'
 import Chapter from './Chapter'
 
 export interface ReaderProps {
-	toc: TOCNode[]
-	chapter: TOCNodeWithContent
-	setChapter: (toc: TOCNodeWithContent) => void
+	toc: NavPoint[]
+	chapter: NavPointWithContent
+	setChapter: (toc: NavPointWithContent) => void
 }
 
 export default class Reader extends React.Component<ReaderProps, {}> {

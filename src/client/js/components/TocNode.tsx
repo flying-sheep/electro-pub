@@ -1,4 +1,4 @@
-import { TOCNode } from '../../../shared/epub'
+import { NavPoint } from '../../../shared/epub'
 
 import * as React from 'react'
 
@@ -6,11 +6,11 @@ import Toc from './Toc'
 
 
 export interface TocNodeClickHandler {
-	(toc: TOCNode): void			
+	(toc: NavPoint): void			
 }
 
 export interface TocNodeProps {
-	toc: TOCNode,
+	toc: NavPoint,
 	onNodeClick: TocNodeClickHandler,
 }
 

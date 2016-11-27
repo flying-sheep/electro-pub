@@ -9,10 +9,7 @@ export default class EPubHandler extends Handler {
 	
 	handleRequest: Electron.BufferProtocolHandler = (request: Electron.ProtocolRequest, callback: Electron.BufferProtocolCallback) => {
 		const path = this.getPath(request.url)
-		const item = this.epub.manifest[path]
-		callback({
-			data: item.data,
-			mimeType: item.mime,
-		})
+		const { data, mime } = this.epub.manifest[path]
+		callback({ data, mimeType: mime })
 	}
 }

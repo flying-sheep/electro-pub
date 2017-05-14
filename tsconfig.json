@@ -6,11 +6,11 @@
 		"moduleResolution": "node",
 		"sourceMap": true,
 		"jsx": "react",
-		"noImplicitAny": true,
-		"strictNullChecks": true,
+		"strict": true,
 		"forceConsistentCasingInFileNames": true
 	},
-	"exclude": [
-		"node_modules"
+	"include": [
+		"src/**/*.ts",
+		"*.ts"
 	]
 }

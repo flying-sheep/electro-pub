@@ -1,4 +1,4 @@
-import { DefinePlugin, NoErrorsPlugin, Configuration } from 'webpack'
+import { DefinePlugin, NoEmitOnErrorsPlugin, Configuration } from 'webpack'
 
 import * as BitBarProgressPlugin from 'bitbar-webpack-progress-plugin'
 import * as CopyPlugin from 'copy-webpack-plugin'
@@ -53,7 +53,7 @@ const config: Configuration = {
 				test: /.*\.css/,
 				loader: ExtractTextPlugin.extract({
 					//fallbackLoader: 'style-loader',
-					loader: [
+					use: [
 						//bug: ExtractTextPlugin only knows query, not options
 						{ loader: 'css-loader', query: { importLoaders: 1 } },
 						{
@@ -82,7 +82,7 @@ const config: Configuration = {
 				electron: '"1.4.6"',
 			},
 		}),
-		new NoErrorsPlugin(),
+		new NoEmitOnErrorsPlugin(),
 	],
 	stats: {
 		colors: true,

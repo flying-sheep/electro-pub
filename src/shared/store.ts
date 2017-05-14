@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose, Store } from 'redux'
-import * as createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import {
     forwardToMain,    forwardToRenderer,
     replayActionMain, replayActionRenderer,
